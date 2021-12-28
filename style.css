@@ -1,0 +1,52 @@
+body {
+	Font-family: 				Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+	background-color:			#000;
+}
+
+.right {
+	font-size:			1em;
+	color:				#fff;
+	background-color: 	#000;
+	overflow:			hidden;
+}
+
+.subtle {
+	opacity:			50%;
+	color:				#51f734;
+	filter:				blur(5px);
+	top:				0px;
+	z-index:			0;
+	position:			absolute;
+}
+
+.center {
+	text-align: 		center;
+}
+
+.phpTable {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  background-color:	#ddd;
+  width: 100%;
+}
+
+.phpTable td, .phpTable th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.phpTable tr:nth-child(even) {background-color: #f2f2f2;}
+
+.phpTable tr:hover {background-color: #ddd;}
+
+.phpTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #FFF;
+  color: white;
+}
+
+h1 {
+	font-size:			10em;
+}
