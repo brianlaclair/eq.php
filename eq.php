@@ -10,11 +10,7 @@
 //									  brianlaclair.com/eq for help & license
 //	
 
-#region Temp Settings
-
-$endchar = "\n";
-
-#endregion
+$_eq_version = "1.0";
 
 #region Basic HTML
 
@@ -23,13 +19,13 @@ $endchar = "\n";
  * @function
  * @param {string} [attributes] - Add optional attributes to the <html> tag, such as html('lang="en" xmlns="http://www.w3.org/1999/xhtml"');
  */
-function html($attributes) {
+function html($attributes = "") {
 	
 	if ($attributes != "") {
 		$attributes = " " + $attributes;
 	}
 	
-	echo "<!DOCTYPE html>\n<html{$attributes}>";
+	echo "<!DOCTYPE html>\n<html{$attributes}>" . "\n";
 }
 
 /**
@@ -37,7 +33,7 @@ function html($attributes) {
  * @function
  */
 function html_end() {
-	echo "</html>";
+	echo "</html>" . "\n";
 }
 
 /**
@@ -45,7 +41,7 @@ function html_end() {
  * @function
  */
 function head() {
-	echo "<head>";
+	echo "<head>" . "\n";
 }
 
 /**
@@ -53,7 +49,7 @@ function head() {
  * @function
  */
 function head_end() {
-	echo "</head>";
+	echo "</head>" . "\n";
 }
 
 /**
@@ -61,7 +57,7 @@ function head_end() {
  * @function
  */
 function body() {
-	echo "<body>";
+	echo "<body>" . "\n";
 }
 
 /**
@@ -69,7 +65,7 @@ function body() {
  * @function
  */
 function body_end() {
-	echo "</body>";
+	echo "</body>" . "\n";
 }
 
 /**
@@ -78,7 +74,45 @@ function body_end() {
  * @param {string} title - String to set the title to
  */
 function eq_title($title) {
-	echo "<title>{$title}</title>";
+	echo "<title>{$title}</title>" . "\n";
+}
+
+function eq_meta($name = "", $content = "") {
+	
+	$_first 	= "name=";
+	$_second 	= "content=";
+	
+	$_charset_array 	= ["ascii", "ansi", "8859-1", "utf-8"];
+	$_ht_equ_array 		= ["content-security-policy", "content-type", "default-style", "refresh"];
+	$_social_array		= ["og:", "fb:", "article:"]; // Just a quick note that this is very dumb - Twitter gets it right though and deserves lots of clapping
+	
+	// If our type is in the header array
+	if (in_array(strtolower($name), $_ht_equ_array)) {
+		// We can assume we're setting via http-equiv
+		$_first = "http-equiv=";
+	}
+	
+	// If our type is in the charset array
+	if (in_array(strtolower($name), $_charset_array)) {
+		// We can assume we're setting via charset
+		$_first = "charset=";
+	}
+	
+	// Check for social tags that need modification - again, this is so dumb. 
+	foreach($_social_array as $_social) {
+		if (substr_count(strtolower($name), $_social)) {
+			$_first = "property=";
+		}
+	}
+	
+	echo "<meta {$_first}\"{$name}\"";
+	
+	if ($content !== "") {
+		echo " {$_second}\"{$content}\"";
+	}
+	
+	echo ">\n";
+	
 }
 
 #endregion
@@ -100,6 +134,47 @@ function eq_style($stylesheet) {
 	
 	
 }
+#endregion
+
+#region Optimized HTML
+
+/**
+ * Automated opening of HTML document
+ * @function
+ * @param {...string} attributes - include links to stylesheets, javascript, etc
+ */
+function eq_start() {
+	$_numArgs = func_get_args();
+	
+	html();
+	head();
+	
+	// Loop through attributes
+	foreach ($_numArgs as $args) {
+		// Match and do function
+		if (is_array($args)) {
+			$_pass = "";
+			if (isset($args[1])) {
+				$_pass = $args[1];
+			}
+			eq_meta($args[0], $_pass);
+		} else if (substr_count($args, "title=")) {
+			eq_title(explode("=", $args)[1]);
+		} else if (substr_count($args, ".css")) {
+			eq_style($args);
+		} else if (substr_count($args, ".js")) {
+			eq_script($args);
+		}
+	}
+	
+	head_end();
+	
+}
+
+function eq_end() {
+	html_end();
+}
+
 #endregion
 
 #region Foundational Functions
@@ -145,9 +220,8 @@ function prefix($class, $id) {
 function eq_script($script) {
 	
 	// Dynamically check if the script is going to be included by the browser, or if it's written on the page
-	if (url_exists($script)) {
+	if (url_exists($script) || file_exists($script)) {
 		echo "<script src=\"{$script}\"></script>" . "\n";
-		echo "<!-- Found Script Automagically -->";
 	} else {
 		echo "<script>{$script}</script>" . "\n";
 	}
@@ -156,12 +230,12 @@ function eq_script($script) {
 
 #endregion
 
-#region Text functions
+#region Content Functions
 
 /**
  * Output text (or HTML) to the page
  * @function
- * @param {string} text - The string to output
+ * @param {string} text - The string to output, can be an array
  * @param {string} [type] - The tag to enclose with, defaults to "p"
  * @param {string} [class] - The class to set the text to
  */
@@ -171,13 +245,47 @@ function eq_text($text = "", $type = "p", $class = -1) {
 		$_class = " class=\"{$class}\"";
 	}
 	
-	if (is_array($text)) {
-		foreach ($text as $_text) {
-			echo "<{$type}{$_class}>{$_text}</{$type}>";
-		}
-	} else {
-		echo "<{$type}{$_class}>{$text}</{$type}>";
+	if (!is_array($text)) {
+		$text = [$text];
 	}
+	
+	if (!is_array($type)) {
+		$type = [$type];
+	}
+	
+	// Set up the type vars
+	$_typeStart = "";
+	$_typeEnd	= "";
+	foreach ($type as $t) {
+		$_typeStart .= "<{$t}{$_class}>";
+		$_typeEnd	= "</{$t}>" . $_typeEnd;
+	}
+	
+	foreach ($text as $_text) {
+		echo "{$_typeStart}{$_text}{$_typeEnd}" . "\n";
+	}
+
+}
+
+/**
+ * Embed image onto the page
+ * @function
+ * @param {string} URL - The url of the image
+ * @param {string} [class] - the class of the image
+ * @param {string} [addt] - additional <img> attributes
+ */
+function eq_image($url = "", $class = -1, $addt = -1) {
+	$_class = "";
+	if ($class != -1) {
+		$_class = " class=\"{$class}\"";
+	}
+	
+	$_addt = "";
+	if ($addt != -1) {
+		$_addt = " " . $addt;
+	}
+	
+	echo "<img src=\"{$url}\"{$_class}{$_addt}>";
 
 }
 
@@ -251,3 +359,18 @@ function eq_table_end() {
 	
 }
 #endregion
+
+
+// A message that appears only if you browse to this file
+if (count(get_included_files()) == 1) {
+	echo "
+									███████╗░██████╗░░░░██████╗░██╗░░██╗██████╗░<br>
+									██╔════╝██╔═══██╗░░░██╔══██╗██║░░██║██╔══██╗<br>
+									█████╗░░██║██╗██║░░░██████╔╝███████║██████╔╝<br>
+									██╔══╝░░╚██████╔╝░░░██╔═══╝░██╔══██║██╔═══╝░<br>
+									███████╗░╚═██╔═╝░██╗██║░░░░░██║░░██║██║░░░░░<br>
+									╚══════╝░░░╚═╝░░░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═╝░░░░░{$_eq_version}<br>
+									this site uses eq.php - an easy way to markup pages within PHP scripts<br>
+									goto <a href=\"https://brianlaclair.com/eq\">https://brianlaclair.com/eq</a> to learn more!
+	";
+}

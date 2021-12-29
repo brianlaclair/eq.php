@@ -1,0 +1,46 @@
+body {
+	Font-family: 				Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+	background-color:			#000;
+}
+
+.center {
+	text-align: 		center;
+}
+
+h1 {
+	font-size:			10em;
+	margin-bottom:		0px;
+	transition-duration: 1s;
+}
+
+h1:hover {
+	color:				red;
+	text-shadow: 		5px 5px #fff;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: 1fr 0.1fr 1fr;
+}
+
+.box {
+	margin: 20px;
+}
+
+t {
+	font-size: 			1.5em;
+	color:				#FFF;
+	transition-duration: 1s;
+}
+
+t:hover {
+	color:				red;
+	text-shadow: 		1px 1px #fff;
+}
+
+
+.header {
+	text-align:			center;
+	font-size:			1em;
+	color:				#fff;
+}
