@@ -19,12 +19,41 @@ h1:hover {
 }
 
 .grid {
-	display: grid;
-	grid-template-columns: 1fr 0.1fr 1fr;
+	border-radius:			20px;
+	overflow: 				hidden;
+	margin:					0px 20px 50px 20px;
+	display: 				flex;
+    align-items: 			center;
+	text-align: 			center;
+	display: 				grid;
+	grid-template-columns: 	45% 10% 45%;
+	background-image: 		linear-gradient(to right, #adadad , #6cadab);
+	transition-duration:	2s;
 }
 
 .box {
 	margin: 20px;
+}
+
+.button {
+	border-radius:			20px;
+	padding:				10px;
+	border: 				none;
+	width:					40%;
+	color:					#000;
+	background-color: 		#FFF;
+	transition-duration:	1s;
+	font-size:				1.5em;
+}
+
+.button:hover {
+	width:					50%;
+	color:					#FFF;
+	background-color: 		#000;
+}
+
+.middle {
+	color: #fff;
 }
 
 t {
@@ -43,4 +72,5 @@ t:hover {
 	text-align:			center;
 	font-size:			1em;
 	color:				#fff;
+	margin-bottom:		50px;
 }

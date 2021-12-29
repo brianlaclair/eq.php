@@ -289,6 +289,17 @@ function eq_image($url = "", $class = -1, $addt = -1) {
 
 }
 
+function eq_button($text = "", $action = -1, $class = -1) {
+	
+	$_class = "";
+	if ($class != -1) {
+		$_class = " class=\"{$class}\"";
+	}
+	
+	echo "<button{$_class}>{$text}</button>";
+	
+}
+
 #endregion
 
 #region Div Functions
