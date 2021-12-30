@@ -16,13 +16,17 @@
 	
 	eq_div("grid");
 		eq_div("box");
-			eq_text("There's a better way to write HTML now.", "h2", "center");
+			eq_text("There's a better way to write HTML", "h2", "center");
 			eq_text(["eq.php is a PHP library that exists to make your life easier", "Why focus on ever-changing, messy, and randomly deviating markup within your PHP?", "<b>eq.php takes the trial-and-error out of markup and allows you to make your page beautiful with sensible functions</b>"], "p", "center");
 		eq_div_end();
 		eq_div("box");
 		eq_div_end();
 		eq_div("box");
 			eq_button("get eq.php", "", "button");
+			eq_br();
+			eq_button("learn eq.php", "", "button");
+			eq_br();
+			eq_button("donate", "", "button");
 		eq_div_end();
 	
 	eq_div_end();

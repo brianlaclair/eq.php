@@ -258,7 +258,8 @@ function eq_text($text = "", $type = "p", $class = -1) {
 	$_typeEnd	= "";
 	foreach ($type as $t) {
 		$_typeStart .= "<{$t}{$_class}>";
-		$_typeEnd	= "</{$t}>" . $_typeEnd;
+		$_tMod 		= explode(" ", $t)[0];
+		$_typeEnd	= "</{$_tMod}>" . $_typeEnd;
 	}
 	
 	foreach ($text as $_text) {
@@ -289,6 +290,10 @@ function eq_image($url = "", $class = -1, $addt = -1) {
 
 }
 
+function eq_br() {
+	echo "</br>" . "\n";
+}
+
 function eq_button($text = "", $action = -1, $class = -1) {
 	
 	$_class = "";
@@ -296,7 +301,7 @@ function eq_button($text = "", $action = -1, $class = -1) {
 		$_class = " class=\"{$class}\"";
 	}
 	
-	echo "<button{$_class}>{$text}</button>";
+	echo "<button{$_class}>{$text}</button>" . "\n";
 	
 }
 
