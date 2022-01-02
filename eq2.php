@@ -1,19 +1,55 @@
 <?php
+//░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+//░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░███████╗░██████╗░░░░██████╗░██╗░░██╗██████╗░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+//░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██╔════╝██╔═══██╗░░░██╔══██╗██║░░██║██╔══██╗░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+//░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█████╗░░██║██╗██║░░░██████╔╝███████║██████╔╝░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+//░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██╔══╝░░╚██████╔╝░░░██╔═══╝░██╔══██║██╔═══╝░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+//░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░███████╗░╚═██╔═╝░██╗██║░░░░░██║░░██║██║░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+//░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░╚══════╝░░░╚═╝░░░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═╝░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+//░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░EQ.PHP is written by Brian LaClair░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+//░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░brianlaclair.com/eq for help & license░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+//░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 function eq_start() {
 	
 	// Create the buffer for all future EQ commands
-	global $__eq_buffer;
+	global $__eq_buffer, $__eq_html_attr;
 	$__eq_buffer = ['head' => [], 'body' => []];
+	$__eq_html_attr;
 	
 }
 
 function eq_end($return = false) {
 	
 	// Finalize the EQ buffer and echo
-	global $__eq_buffer;
+	global $__eq_buffer, $__eq_html_attr;
 	
-	var_dump($__eq_buffer);
+	$_head 			= "";
+	$_body 			= "";
+	$_attributes 	= "";
+	
+	foreach ($__eq_buffer['head'] as $head) {
+		$_head .= "\n" . $head;
+	}
+	
+	foreach ($__eq_buffer['body'] as $body) {
+		$_body .= "\n" . $body;
+	}
+	
+	$_final = 
+"<!DOCTYPE html>
+<html{$_attributes}>
+<head>{$_head}
+</head>
+<body>{$_body}
+</body>
+</html>";
+
+	if (!$return) {
+		echo $_final;
+	} else {
+		return $_final;
+	}
 	
 }
 
@@ -91,7 +127,7 @@ function eq_style($stylesheet, $head = true) {
 	if (substr_count($stylesheet, " ")) {
 		$_hold = "<style>{$stylesheet}</style>";
 	} else {
-		$_hold = "<link rel=\"stylesheet\" href=\"{$stylesheet}\">" . "\n";
+		$_hold = "<link rel=\"stylesheet\" href=\"{$stylesheet}\">";
 	}
 	
 	if ($head) {
@@ -103,5 +139,65 @@ function eq_style($stylesheet, $head = true) {
 }
 
 #endregion
+
+function eq_div($class = NULL, $id = NULL, $attr = NULL) {
+	
+	$_class = "";
+	$_id	= "";
+	$_attr  = "";
+	
+	if (isset($class)) {
+		$_class = " class=\"{$class}\"";
+	}
+	
+	if (isset($id)) {
+		$_id = " id=\"{$id}\"";
+	}
+		
+	if (isset($attr)) {
+		$_attr = " " . $attr;
+	}
+	
+	_eq_add_body("<div{$_id}{$_class}{$_attr}>");
+	
+}
+
+function eq_div_end($ittr = 1) {
+	for($i = 0; $i < $ittr; $i++) {
+		_eq_add_body("</div>");
+	}
+}
+
+function eq_text($text = "", $type = NULL, $class = NULL) {
+	$_class = "";
+	$_typeStart = "";
+	$_typeEnd	= "";
+	
+	if (isset($class)) {
+		$_class = " class=\"{$class}\"";
+	}
+	
+	if (!is_array($text)) {
+		$text = [$text];
+	}
+	
+	if (isset($type) || isset($class)) {
+		if (!is_array($type)) {
+			$type = [$type];
+		}
+		
+		// Set up the type vars
+		foreach ($type as $t) {
+			$_typeStart .= "<{$t}{$_class}>";
+			$_tMod 		= explode(" ", $t)[0];
+			$_typeEnd	= "</{$_tMod}>" . $_typeEnd;
+		}
+	}
+	
+	foreach ($text as $_text) {
+		_eq_add_body("{$_typeStart}{$_text}{$_typeEnd}");
+	}
+
+}
 
 ?>
