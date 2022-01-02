@@ -1,156 +1,26 @@
 <?php
+
 //░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 //░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░███████╗░██████╗░░░░██████╗░██╗░░██╗██████╗░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 //░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██╔════╝██╔═══██╗░░░██╔══██╗██║░░██║██╔══██╗░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 //░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█████╗░░██║██╗██║░░░██████╔╝███████║██████╔╝░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 //░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██╔══╝░░╚██████╔╝░░░██╔═══╝░██╔══██║██╔═══╝░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 //░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░███████╗░╚═██╔═╝░██╗██║░░░░░██║░░██║██║░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-//░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░╚══════╝░░░╚═╝░░░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═╝1.0░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+//░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░╚══════╝░░░╚═╝░░░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═╝1.0.0░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 //░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-//░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░EQ.PHP is written by Brian LaClair░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-//░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░brianlaclair.com/eq for help & license░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+//░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   EQ.PHP is written by Brian LaClair   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+//░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ brianlaclair.com/eq for help & license ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 //░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-$_eq_version = "1.0";
-
-#region Basic HTML
-
-/**
- * Opens the HTML document
- * @function
- * @param {string} [attributes] - Add optional attributes to the <html> tag, such as html('lang="en" xmlns="http://www.w3.org/1999/xhtml"');
- */
-function html($attributes = "") {
-	
-	if ($attributes != "") {
-		$attributes = " " + $attributes;
-	}
-	
-	echo "<!DOCTYPE html>\n<html{$attributes}>" . "\n";
-}
-
-/**
- * Closes the HTML document
- * @function
- */
-function html_end() {
-	echo "</html>" . "\n";
-}
-
-/**
- * Opens the head section of the document
- * @function
- */
-function head() {
-	echo "<head>" . "\n";
-}
-
-/**
- * Closes the head section of the document
- * @function
- */
-function head_end() {
-	echo "</head>" . "\n";
-}
-
-/**
- * Opens the body section of the document
- * @function
- */
-function body() {
-	echo "<body>" . "\n";
-}
-
-/**
- * Closes the body section of the document
- * @function
- */
-function body_end() {
-	echo "</body>" . "\n";
-}
-
-/**
- * Sets the title of the document within the head section
- * @function
- * @param {string} title - String to set the title to
- */
-function eq_title($title) {
-	echo "<title>{$title}</title>" . "\n";
-}
-
-function eq_meta($name = "", $content = "") {
-	
-	$_first 	= "name=";
-	$_second 	= "content=";
-	
-	$_charset_array 	= ["ascii", "ansi", "8859-1", "utf-8"];
-	$_ht_equ_array 		= ["content-security-policy", "content-type", "default-style", "refresh"];
-	$_social_array		= ["og:", "fb:", "article:"]; // Just a quick note that this is very dumb - Twitter gets it right though and deserves lots of clapping
-	
-	// If our type is in the header array
-	if (in_array(strtolower($name), $_ht_equ_array)) {
-		// We can assume we're setting via http-equiv
-		$_first = "http-equiv=";
-	}
-	
-	// If our type is in the charset array
-	if (in_array(strtolower($name), $_charset_array)) {
-		// We can assume we're setting via charset
-		$_first = "charset=";
-	}
-	
-	// Check for social tags that need modification - again, this is so dumb. 
-	foreach($_social_array as $_social) {
-		if (substr_count(strtolower($name), $_social)) {
-			$_first = "property=";
-		}
-	}
-	
-	echo "<meta {$_first}\"{$name}\"";
-	
-	if ($content !== "") {
-		echo " {$_second}\"{$content}\"";
-	}
-	
-	echo ">\n";
-	
-}
-
-#endregion
-
-#region Styling Functions
-/**
- * Sets CSS of the document
- * @function
- * @param {string} style - link to stylesheet or a string containing CSS
- */
-function eq_style($stylesheet) {
-	
-	// If there is a space, we can assume it's not a link
-	if (substr_count($stylesheet, " ")) {
-		echo "<style>{$stylesheet}</style>" . "\n";
-	} else {
-		echo "<link rel=\"stylesheet\" href=\"{$stylesheet}\">" . "\n";
-	}
-	
-	
-}
-#endregion
-
-#region Optimized HTML
-
-/**
- * Automated opening of HTML document
- * @function
- * @param {...string} attributes - include links to stylesheets, javascript, etc
- */
 function eq_start() {
 	$_numArgs = func_get_args();
 	
-	html();
-	head();
+	// Create the buffer for all future EQ commands
+	global $__eq_buffer, $__eq_html_attr;
+	$__eq_buffer = ['head' => [], 'body' => []];
+	$__eq_html_attr;
 	
-	// Loop through attributes
+	// Automatically generate header content based on function arguments
 	foreach ($_numArgs as $args) {
 		// Match and do function
 		if (is_array($args)) {
@@ -159,28 +29,76 @@ function eq_start() {
 				$_pass = $args[1];
 			}
 			eq_meta($args[0], $_pass);
-		} else if (substr_count($args, "title=")) {
-			eq_title(explode("=", $args)[1]);
-		} else if (substr_count($args, ".css")) {
+		} else if (substr_count($args, "eq_title=")) {
+			eq_title(explode("_title=", $args)[1]);
+		} else if (substr_count($args, "css") || substr_count($args, "eq_style=")) {
+			if (substr_count($args, "eq_style=")) {
+				$args = explode("_style=", $args)[1];
+			}
 			eq_style($args);
-		} else if (substr_count($args, ".js")) {
+		} else if (substr_count($args, "js") || substr_count($args, "eq_script=")) {
+			if (substr_count($args, "eq_script=")) {
+				$args = explode("_script=", $args)[1];
+			}
 			eq_script($args);
 		}
 	}
 	
-	head_end();
 	
 }
 
-function eq_end() {
-	html_end();
+function eq_end($return = false) {
+	
+	// Finalize the EQ buffer and echo
+	global $__eq_buffer, $__eq_html_attr;
+	
+	$_head 			= "";
+	$_body 			= "";
+	$_attributes 	= "";
+	
+	foreach ($__eq_buffer['head'] as $head) {
+		$_head .= "\n" . $head;
+	}
+	
+	foreach ($__eq_buffer['body'] as $body) {
+		$_body .= "\n" . $body;
+	}
+	
+	// Our document template
+	$_final = 
+"<!DOCTYPE html>
+<html{$_attributes}>
+<head>{$_head}
+</head>
+<body>{$_body}
+</body>
+</html>";
+
+	if (!$return) {
+		echo $_final;
+	} else {
+		return $_final;
+	}
+	
 }
 
-#endregion
+#region Internal Functions
 
-#region Foundational Functions
+function _eq_add_head($ln) {
+	
+	global $__eq_buffer;
+	array_push($__eq_buffer['head'], $ln);
+	
+}
 
-function url_exists($url) {
+function _eq_add_body($ln) {
+	
+	global $__eq_buffer;
+	array_push($__eq_buffer['body'], $ln);
+	
+}
+
+function _eq_url_exists($url) {
 	
 	$headers = @get_headers($url);
   
@@ -193,56 +111,150 @@ function url_exists($url) {
 }
 
 // returns an HTML formatted string for class and id declarations
-function prefix($class, $id) {
+function _eq_prefix($class, $id) {
 	
 	$_class = "";
 	$_id 	= "";
 	
-	if ($class != -1) {
+	if (isset($class)) {
 		$_class = " class=\"{$class}\""; 
 	}
 	
-	if ($id != -1) {
+	if (isset($id)) {
 		$_id = " id=\"{$id}\""; 
 	}
 	
 	return "{$_class}{$_id}";
 	
 }
+
 #endregion
 
-#region Script Functions
+#region Head Functions
 
-/**
- * Link or type JS elements
- * @function
- * @param {string} script - link to JS or a string containing JS
- */
-function eq_script($script) {
+function eq_title($title) {
+	
+	_eq_add_head("<title>{$title}</title>");
+	
+}
+
+function eq_meta($name = "", $content = "") {
+	
+	$_first 			= "name=";
+	$_second 			= "content=";
+	
+	$_ht_equ_array 		= ["content-security-policy", "content-type", "default-style", "refresh"];
+	$_charset_array 	= ["ascii", "ansi", "8859-1", "utf-8"];
+	$_social_array		= ["og:", "fb:", "article:"]; // Just a quick note that this is very dumb - Twitter gets it right though and deserves lots of clapping
+	
+	// If our type is in the header array
+	if (in_array(strtolower($name), $_ht_equ_array)) {
+		// We can assume we're setting http-equiv
+		$_first = "http-equiv=";
+	}
+	
+	// If our type is in the charset array
+	if (in_array(strtolower($name), $_charset_array)) {
+		// We can assume we're setting charset
+		$_first = "charset=";
+	}
+	
+	// Check for social tags that need modification - again, this is so dumb. 
+	foreach($_social_array as $_social) {
+		if (substr_count(strtolower($name), $_social)) {
+			$_first = "property=";
+		}
+	}
+	
+	$_hold = "meta {$_first}\"{$name}\"";
+	
+	if ($content !== "") {
+		$_hold .= " {$_second}\"{$content}\"";
+	}
+	
+	_eq_add_head("<{$_hold}>");
+	
+}
+
+#endregion
+
+#region Styling and Scripts
+
+function eq_style($stylesheet, $head = true) {
+	
+	// Dynamically check if the CSS is going to be included by the browser, or if it's written on the page
+	if (_eq_url_exists($stylesheet) || file_exists($stylesheet)) {
+		$_hold = "<link rel=\"stylesheet\" href=\"{$stylesheet}\">";
+	} else {
+		$_hold = "<style>{$stylesheet}</style>";
+	}
+	
+	if ($head) {
+		_eq_add_head($_hold);
+	} else {
+		_eq_add_body($_hold);
+	}
+	
+}
+
+function eq_script($script, $head = true) {
 	
 	// Dynamically check if the script is going to be included by the browser, or if it's written on the page
-	if (url_exists($script) || file_exists($script)) {
-		echo "<script src=\"{$script}\"></script>" . "\n";
+	if (_eq_url_exists($script) || file_exists($script)) {
+		$_hold = "<script src=\"{$script}\"></script>";
 	} else {
-		echo "<script>{$script}</script>" . "\n";
+		$_hold = "<script>{$script}</script>";
+	}
+	
+	if ($head) {
+		_eq_add_head($_hold);
+	} else {
+		_eq_add_body($_hold);
 	}
 	
 }
 
 #endregion
 
-#region Content Functions
-
-/**
- * Output text (or HTML) to the page
- * @function
- * @param {string} text - The string to output, can be an array
- * @param {string} [type] - The tag to enclose with, defaults to "p"
- * @param {string} [class] - The class to set the text to
- */
-function eq_text($text = "", $type = "p", $class = -1) {
+#region Div Functions
+function eq_div($class = NULL, $id = NULL, $attr = NULL) {
+	
 	$_class = "";
-	if ($class != -1) {
+	$_id	= "";
+	$_attr  = "";
+	
+	if (isset($class)) {
+		$_class = " class=\"{$class}\"";
+	}
+	
+	if (isset($id)) {
+		$_id = " id=\"{$id}\"";
+	}
+		
+	if (isset($attr)) {
+		$_attr = " " . $attr;
+	}
+	
+	_eq_add_body("<div{$_id}{$_class}{$_attr}>");
+	
+}
+
+function eq_div_end($ittr = 1) {
+	for($i = 0; $i < $ittr; $i++) {
+		_eq_add_body("</div>");
+	}
+}
+
+#endregion
+
+#region Content
+
+function eq_text($text = "", $type = NULL, $class = NULL) {
+	$_class = "";
+	$_typeStart = "";
+	$_typeEnd	= "";
+	
+	if (isset($class)) {
 		$_class = " class=\"{$class}\"";
 	}
 	
@@ -250,91 +262,89 @@ function eq_text($text = "", $type = "p", $class = -1) {
 		$text = [$text];
 	}
 	
-	if (!is_array($type)) {
-		$type = [$type];
-	}
-	
-	// Set up the type vars
-	$_typeStart = "";
-	$_typeEnd	= "";
-	foreach ($type as $t) {
-		$_typeStart .= "<{$t}{$_class}>";
-		$_tMod 		= explode(" ", $t)[0];
-		$_typeEnd	= "</{$_tMod}>" . $_typeEnd;
+	if (isset($type) || isset($class)) {
+		if (!is_array($type)) {
+			$type = [$type];
+		}
+		
+		// Set up the type vars - essentially this is useful if we want to say something like ["div class=X", "p"] in our type argument,
+		// so that instead of closing with </div class=X">, it closes with </div>
+		foreach ($type as $t) {
+			$_typeStart .= "<{$t}{$_class}>";
+			$_tMod 		= explode(" ", $t)[0];
+			$_typeEnd	= "</{$_tMod}>" . $_typeEnd;
+		}
 	}
 	
 	foreach ($text as $_text) {
-		echo "{$_typeStart}{$_text}{$_typeEnd}" . "\n";
+		_eq_add_body("{$_typeStart}{$_text}{$_typeEnd}");
 	}
-
+	
 }
 
-/**
- * Embed image onto the page
- * @function
- * @param {string} URL - The url of the image
- * @param {string} [class] - the class of the image
- * @param {string} [addt] - additional <img> attributes
- */
-function eq_image($url = "", $class = -1, $addt = -1) {
-	$_class = "";
-	if ($class != -1) {
-		$_class = " class=\"{$class}\"";
+function eq_image($url = "", $class = null, $attr = null, $return = false) {
+	
+	$_attr = "";
+	if (isset($attr)) {
+		$_attr = " " . $attr;
 	}
 	
-	$_addt = "";
-	if ($addt != -1) {
-		$_addt = " " . $addt;
+	if (!is_array($url)) {
+		$url = [$url];
 	}
 	
-	echo "<img src=\"{$url}\"{$_class}{$_addt}>";
-
+	$_ret = [];
+	
+	foreach ($url as $value) {
+		array_push($_ret, "<img" . _eq_prefix($class, null) . " src=\"{$value}\"{$_attr}>");
+	}
+	
+	if (!$return) {
+		foreach($_ret as $value) {
+			_eq_add_body($value);
+		}
+	} else {
+		$_fin = "";
+		foreach($_ret as $value) {
+			$_fin .= $value;
+		}
+		return $_fin;
+	}
+	
 }
 
 function eq_br() {
-	echo "</br>" . "\n";
+	_eq_add_body("</br>");
 }
 
-function eq_button($text = "", $action = -1, $class = -1) {
+function eq_caption($text = "", $class = null) {
 	
 	$_class = "";
-	if ($class != -1) {
+	if (isset($class)) {
 		$_class = " class=\"{$class}\"";
 	}
 	
-	echo "<button{$_class}>{$text}</button>" . "\n";
+	_eq_add_body("<caption{$_class}>{$text}</caption>");
+}
+
+function eq_button($text = "", $action = null, $class = null) {
+	
+	$_class = "";
+	$_attr 	= "";
+	
+	if (isset($class)) {
+		$_class = " class=\"{$class}\"";
+	}
+	
+	if (isset($attr)) {
+		$_attr = " {$action}";
+	}
+	
+	_eq_add_body("<button{$_class}{$_attr}>{$text}</button>");
 	
 }
 
-#endregion
-
-#region Div Functions
-
-/**
- * Open a new div
- * @function
- * @param {string} [class] - The class to set the div to
- * @param {string} [id] - The ID of the div
- */
-function eq_div($class = -1, $id = -1) {
-	
-	echo "<div" . prefix($class, $id) . ">" . "\n";
-	
-}
-
-/**
- * Closes the currently open div
- * @function
- */
-function eq_div_end() {
-	
-	echo "</div>" . "\n";
-	
-}
-
-#endregion
-																
-#region Table functions
+#region Tables
 
 /**
  * Open a new table
@@ -342,9 +352,9 @@ function eq_div_end() {
  * @param {string} [class] - The class to set the table to
  * @param {string} [id] - The ID of the table
  */
-function eq_table($class = -1, $id = -1) {
+function eq_table($class = null, $id = null) {
 	
-	echo "<table" . prefix($class, $id) . ">" . "\n";
+	_eq_add_body("<table" . _eq_prefix($class, $id) . ">");
 	
 }
 
@@ -356,13 +366,13 @@ function eq_table($class = -1, $id = -1) {
 function eq_table_row() {
 	$_numArgs = func_get_args();
 	
-	echo "<tr>";
+	_eq_add_body("<tr>");
 	
 	foreach ($_numArgs as $arg) {
-		echo "<td>{$arg}</td>";
+		_eq_add_body("<td>{$arg}</td>");
 	}
 	
-	echo "</tr>" . "\n";
+	_eq_add_body("</tr>");
 	
 }
 
@@ -372,22 +382,10 @@ function eq_table_row() {
  */
 function eq_table_end() {
 	
-	echo "</table>" . "\n";
+	_eq_add_body("</table>");
 	
 }
 #endregion
 
-
-// A message that appears only if you browse to this file
-if (count(get_included_files()) == 1) {
-	echo "
-									███████╗░██████╗░░░░██████╗░██╗░░██╗██████╗░<br>
-									██╔════╝██╔═══██╗░░░██╔══██╗██║░░██║██╔══██╗<br>
-									█████╗░░██║██╗██║░░░██████╔╝███████║██████╔╝<br>
-									██╔══╝░░╚██████╔╝░░░██╔═══╝░██╔══██║██╔═══╝░<br>
-									███████╗░╚═██╔═╝░██╗██║░░░░░██║░░██║██║░░░░░<br>
-									╚══════╝░░░╚═╝░░░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═╝░░░░░{$_eq_version}<br>
-									this site uses eq.php - an easy way to markup pages within PHP scripts<br>
-									goto <a href=\"https://brianlaclair.com/eq\">https://brianlaclair.com/eq</a> to learn more!
-	";
-}
+#endregion
+?>

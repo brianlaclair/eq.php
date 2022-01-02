@@ -1,7 +1,6 @@
 <?php
-	require "../eq.php";
+	require "../eq2.php";
 	eq_start("title=eq.php", "style.css", "prism.css", "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js");
-	body();
 	
 	$tagline = "better- markup- with- php";
 
@@ -46,11 +45,10 @@
 
 	eq_text('eq_start("title=eq.php", "style.css", "prism.css", "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js");', ["div class='box'", "pre", "code"], "language-php");
 
-	eq_div_end();
-	eq_div_end();
+	eq_div_end(2);
+
 	
 	
 	eq_script("prism.js");
-	body_end();
 	eq_end();
 ?>
