@@ -11,11 +11,37 @@
 //░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 function eq_start() {
+	$_numArgs = func_get_args();
 	
 	// Create the buffer for all future EQ commands
 	global $__eq_buffer, $__eq_html_attr;
 	$__eq_buffer = ['head' => [], 'body' => []];
 	$__eq_html_attr;
+	
+	// Automatically generate header content based on function arguments
+	foreach ($_numArgs as $args) {
+		// Match and do function
+		if (is_array($args)) {
+			$_pass = "";
+			if (isset($args[1])) {
+				$_pass = $args[1];
+			}
+			eq_meta($args[0], $_pass);
+		} else if (substr_count($args, "eq_title=")) {
+			eq_title(explode("_title=", $args)[1]);
+		} else if (substr_count($args, "css") || substr_count($args, "eq_style=")) {
+			if (substr_count($args, "eq_style=")) {
+				$args = explode("_style=", $args)[1];
+			}
+			eq_style($args);
+		} else if (substr_count($args, "js") || substr_count($args, "eq_script=")) {
+			if (substr_count($args, "eq_script=")) {
+				$args = explode("_script=", $args)[1];
+			}
+			eq_script($args);
+		}
+	}
+	
 	
 }
 
@@ -69,6 +95,36 @@ function _eq_add_body($ln) {
 	
 }
 
+function _eq_url_exists($url) {
+	
+	$headers = @get_headers($url);
+  
+	if($headers && strpos( $headers[0], '200')) {
+		return true;
+	}
+	
+	return false;
+	
+}
+
+// returns an HTML formatted string for class and id declarations
+function _eq_prefix($class, $id) {
+	
+	$_class = "";
+	$_id 	= "";
+	
+	if (isset($class)) {
+		$_class = " class=\"{$class}\""; 
+	}
+	
+	if (isset($id)) {
+		$_id = " id=\"{$id}\""; 
+	}
+	
+	return "{$_class}{$_id}";
+	
+}
+
 #endregion
 
 #region Head Functions
@@ -113,7 +169,7 @@ function eq_meta($name = "", $content = "") {
 		$_hold .= " {$_second}\"{$content}\"";
 	}
 	
-	_eq_add_head("<{$_mhold}>");
+	_eq_add_head("<{$_hold}>");
 	
 }
 
@@ -123,11 +179,28 @@ function eq_meta($name = "", $content = "") {
 
 function eq_style($stylesheet, $head = true) {
 	
-	// If there is a space, we can assume it's not a link
-	if (substr_count($stylesheet, " ")) {
-		$_hold = "<style>{$stylesheet}</style>";
-	} else {
+	// Dynamically check if the CSS is going to be included by the browser, or if it's written on the page
+	if (_eq_url_exists($stylesheet) || file_exists($stylesheet)) {
 		$_hold = "<link rel=\"stylesheet\" href=\"{$stylesheet}\">";
+	} else {
+		$_hold = "<style>{$stylesheet}</style>";
+	}
+	
+	if ($head) {
+		_eq_add_head($_hold);
+	} else {
+		_eq_add_body($_hold);
+	}
+	
+}
+
+function eq_script($script, $head = true) {
+	
+	// Dynamically check if the script is going to be included by the browser, or if it's written on the page
+	if (_eq_url_exists($script) || file_exists($script)) {
+		$_hold = "<script src=\"{$script}\"></script>";
+	} else {
+		$_hold = "<script>{$script}</script>";
 	}
 	
 	if ($head) {
@@ -140,6 +213,7 @@ function eq_style($stylesheet, $head = true) {
 
 #endregion
 
+#region Div Functions
 function eq_div($class = NULL, $id = NULL, $attr = NULL) {
 	
 	$_class = "";
@@ -168,6 +242,10 @@ function eq_div_end($ittr = 1) {
 	}
 }
 
+#endregion
+
+#region Content
+
 function eq_text($text = "", $type = NULL, $class = NULL) {
 	$_class = "";
 	$_typeStart = "";
@@ -186,7 +264,8 @@ function eq_text($text = "", $type = NULL, $class = NULL) {
 			$type = [$type];
 		}
 		
-		// Set up the type vars
+		// Set up the type vars - essentially this is useful if we want to say something like ["div class=X", "p"] in our type argument,
+		// so that instead of closing with </div class=X">, it closes with </div>
 		foreach ($type as $t) {
 			$_typeStart .= "<{$t}{$_class}>";
 			$_tMod 		= explode(" ", $t)[0];
@@ -197,7 +276,82 @@ function eq_text($text = "", $type = NULL, $class = NULL) {
 	foreach ($text as $_text) {
 		_eq_add_body("{$_typeStart}{$_text}{$_typeEnd}");
 	}
-
+	
 }
 
+function eq_image($url = "", $class = null, $attr = null, $return = false) {
+	
+	$_attr = "";
+	if (isset($attr)) {
+		$_attr = " " . $attr;
+	}
+	
+	if (!is_array($url)) {
+		$url = [$url];
+	}
+	
+	$_ret = [];
+	
+	foreach ($url as $value) {
+		array_push($_ret, "<img" . _eq_prefix($class, null) . " src=\"{$value}\"{$_attr}>");
+	}
+	
+	if (!$return) {
+		foreach($_ret as $value) {
+			_eq_add_body($value);
+		}
+	} else {
+		$_fin = "";
+		foreach($_ret as $value) {
+			$_fin .= $value;
+		}
+		return $_fin;
+	}
+	
+}
+
+#region Tables
+
+/**
+ * Open a new table
+ * @function
+ * @param {string} [class] - The class to set the table to
+ * @param {string} [id] - The ID of the table
+ */
+function eq_table($class = null, $id = null) {
+	
+	_eq_add_body("<table" . _eq_prefix($class, $id) . ">");
+	
+}
+
+/**
+ * Add a row to the open table
+ * @function
+ * @param {...string} [cell_value] - value of the cell
+ */
+function eq_table_row() {
+	$_numArgs = func_get_args();
+	
+	_eq_add_body("<tr>");
+	
+	foreach ($_numArgs as $arg) {
+		_eq_add_body("<td>{$arg}</td>");
+	}
+	
+	_eq_add_body("</tr>");
+	
+}
+
+/**
+ * Closes the open table
+ * @function
+ */
+function eq_table_end() {
+	
+	_eq_add_body("</table>");
+	
+}
+#endregion
+
+#endregion
 ?>
