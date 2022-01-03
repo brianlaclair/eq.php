@@ -1,6 +1,6 @@
 <?php
 
-require "eq2.php";
+require "eq.php";
 
 eq_start("eq_title=Wow, Pictures", "https://fonts.googleapis.com/css?family=Roboto:600|Work+Sans:600|Open+Sans:300,400");
 

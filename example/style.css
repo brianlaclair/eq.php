@@ -18,6 +18,12 @@ h1:hover {
 	text-shadow: 			5px 5px #fff;
 }
 
+butt_list {
+	display:					block;
+	margin-block-start:			20px;
+	margin-block-end:			20px;
+}
+
 .grid {
 	border-radius:			20px;
 	overflow: 				hidden;
@@ -37,14 +43,14 @@ h1:hover {
 
 .button {
 	border-radius:			20px;
-	padding:				10px;
+	padding:				20px;
 	border: 				none;
-	width:					40%;
+	width:					50%;
 	color:					#000;
 	background-color: 		#FFF;
 	transition-duration:	1s;
 	font-size:				1.5em;
-	margin-bottom:			20px;
+	margin-bottom:			50px;
 }
 
 .button:hover {

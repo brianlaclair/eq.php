@@ -282,6 +282,31 @@ function eq_text($text = "", $type = NULL, $class = NULL) {
 	
 }
 
+// Note for doc writing - note the default behavior of this function is different than most others, as it's intended to be used in conjunction with eq_text
+function eq_link($url = "", $text = null, $class = null, $return = true) {
+	$_class = "";
+	$_text  = "";
+	
+	if (isset($class)) {
+		$_class = " class=\"{$class}\"";
+	}
+	
+	if (isset($text)) {
+		$_text = $text;
+	} else {
+		$_text = $url;
+	}
+	
+	$_fin = "<a href=\"{$url}\"{$_class}>{$_text}</a>";
+	
+	if ($return) {
+		return $_fin;
+	} else {
+		_eq_add_body($_fin);
+	}
+	
+}
+
 function eq_image($url = "", $class = null, $attr = null, $return = false) {
 	
 	$_attr = "";
