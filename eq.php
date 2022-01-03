@@ -35,12 +35,12 @@ function eq_start() {
 			if (substr_count($args, "eq_style=")) {
 				$args = explode("_style=", $args)[1];
 			}
-			eq_style($args);
+			eq_style($args, true);
 		} else if (substr_count($args, "js") || substr_count($args, "eq_script=")) {
 			if (substr_count($args, "eq_script=")) {
 				$args = explode("_script=", $args)[1];
 			}
-			eq_script($args);
+			eq_script($args, true);
 		}
 	}
 	
@@ -180,7 +180,17 @@ function eq_meta($name = "", $content = "") {
 
 #region Styling and Scripts
 
-function eq_style($stylesheet, $head = true) {
+function eq_style($stylesheet, $head = null) {
+	
+	// Auto-decide the $head argument based on context, if it's not set
+	if (!isset($head)) {
+		global $__eq_buffer;
+		if (!count($__eq_buffer['body'])) {
+			$head = true;
+		} else {
+			$head = false;
+		}
+	}
 	
 	// Dynamically check if the CSS is going to be included by the browser, or if it's written on the page
 	if (_eq_url_exists($stylesheet) || file_exists($stylesheet)) {
@@ -197,7 +207,17 @@ function eq_style($stylesheet, $head = true) {
 	
 }
 
-function eq_script($script, $head = true) {
+function eq_script($script, $head = null) {
+	
+	// Auto-decide the $head argument based on context, if it's not set
+	if (!isset($head)) {
+		global $__eq_buffer;
+		if (!count($__eq_buffer['body'])) {
+			$head = true;
+		} else {
+			$head = false;
+		}
+	}
 	
 	// Dynamically check if the script is going to be included by the browser, or if it's written on the page
 	if (_eq_url_exists($script) || file_exists($script)) {
@@ -219,29 +239,23 @@ function eq_script($script, $head = true) {
 #region Div Functions
 function eq_div($class = NULL, $id = NULL, $attr = NULL) {
 	
-	$_class = "";
-	$_id	= "";
 	$_attr  = "";
-	
-	if (isset($class)) {
-		$_class = " class=\"{$class}\"";
-	}
-	
-	if (isset($id)) {
-		$_id = " id=\"{$id}\"";
-	}
-		
 	if (isset($attr)) {
 		$_attr = " " . $attr;
 	}
 	
-	_eq_add_body("<div{$_id}{$_class}{$_attr}>");
+	_eq_add_body("<div" . _eq_prefix($class, $id) . "{$_attr}>");
 	
 }
 
 function eq_div_end($ittr = 1) {
-	for($i = 0; $i < $ittr; $i++) {
-		_eq_add_body("</div>");
+	if (is_integer($ittr)) {
+		for($i = 0; $i < $ittr; $i++) {
+			_eq_add_body("</div>");
+		}
+	} else {
+		eq_div($ittr);
+		eq_div_end();
 	}
 }
 

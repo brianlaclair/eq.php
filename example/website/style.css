@@ -20,8 +20,8 @@ h1:hover {
 
 butt_list {
 	display:					block;
-	margin-block-start:			20px;
-	margin-block-end:			20px;
+	margin-block-start:			50px;
+	margin-block-end:			50px;
 }
 
 .grid {
@@ -42,15 +42,15 @@ butt_list {
 }
 
 .button {
+	display:				inline-block;
 	border-radius:			20px;
 	padding:				20px;
 	border: 				none;
-	width:					50%;
+	width:					40%;
 	color:					#000;
 	background-color: 		#FFF;
 	transition-duration:	1s;
 	font-size:				1.5em;
-	margin-bottom:			50px;
 }
 
 .button:hover {
@@ -74,7 +74,6 @@ t:hover {
 	color:					red;
 	text-shadow: 			1px 1px #fff;
 }
-
 
 .header {
 	text-align:				center;
