@@ -1,3 +1,7 @@
+html {
+	scroll-behavior:		smooth;
+}
+
 body {
 	Font-family: 			Century Gothic, CenturyGothic, AppleGothic, sans-serif;
 	background-color:		#000;
@@ -46,15 +50,17 @@ butt_list {
 	border-radius:			20px;
 	padding:				20px;
 	border: 				none;
-	width:					40%;
+	width:					60%;
 	color:					#000;
 	background-color: 		#FFF;
 	transition-duration:	1s;
 	font-size:				1.5em;
+	text-decoration:		none;
 }
 
 .button:hover {
-	width:					50%;
+	cursor:					pointer;
+	width:					70%;
 	color:					#FFF;
 	background-color: 		#000;
 	letter-spacing:			5px;

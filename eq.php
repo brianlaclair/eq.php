@@ -263,7 +263,7 @@ function eq_div_end($ittr = 1) {
 
 #region Content
 
-function eq_text($text = "", $type = NULL, $class = NULL) {
+function eq_text($text = "", $type = NULL, $class = NULL, $return = NULL) {
 	$_class = "";
 	$_typeStart = "";
 	$_typeEnd	= "";
@@ -290,8 +290,20 @@ function eq_text($text = "", $type = NULL, $class = NULL) {
 		}
 	}
 	
-	foreach ($text as $_text) {
-		_eq_add_body("{$_typeStart}{$_text}{$_typeEnd}");
+	if (!isset($return)) {
+		$return = false;
+	}
+	
+	if (!$return) {
+		foreach ($text as $_text) {
+			_eq_add_body("{$_typeStart}{$_text}{$_typeEnd}");
+		}
+	} else {
+		$_fin = "";
+		foreach ($text as $_text) {
+			$_fin .= "{$_typeStart}{$_text}{$_typeEnd}" . "\n";
+		}
+		return $_fin;
 	}
 	
 }
@@ -300,6 +312,13 @@ function eq_text($text = "", $type = NULL, $class = NULL) {
 function eq_link($url = "", $text = null, $class = null, $return = true) {
 	$_class = "";
 	$_text  = "";
+	$_prefix = "href";
+	
+	if ($url[0] == "!") {
+		$_url = explode("=", $url, 2);
+		$url = $_url[1];
+		$_prefix = ltrim($_url[0], "!");
+	}
 	
 	if (isset($class)) {
 		$_class = " class=\"{$class}\"";
@@ -311,7 +330,7 @@ function eq_link($url = "", $text = null, $class = null, $return = true) {
 		$_text = $url;
 	}
 	
-	$_fin = "<a href=\"{$url}\"{$_class}>{$_text}</a>";
+	$_fin = "<a {$_prefix}=\"{$url}\"{$_class}>{$_text}</a>";
 	
 	if ($return) {
 		return $_fin;
@@ -352,8 +371,10 @@ function eq_image($url = "", $class = null, $attr = null, $return = false) {
 	
 }
 
-function eq_br() {
-	_eq_add_body("</br>");
+function eq_br($ittr = 1) {
+	for($i = 0; $i < $ittr; $i++) {
+		_eq_add_body("</br>");
+	}
 }
 
 function eq_caption($text = "", $class = null) {

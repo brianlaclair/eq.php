@@ -17,13 +17,18 @@ eq_end();'];
 	
 	eq_start("eq_title=eq.php", "style.css", "prism.css", "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js");
 	$tagline = "better- markup- with- php";
-
+	
 	eq_div("header");
 	
 		eq_text("🎯eq<sub>.php</sub>", "h1", "center");
 		eq_text(explode("-", $tagline), "t");
 		
 	eq_div_end();
+	
+	eq_script("function copy_composer() {
+	var text = '\"brianlaclair/eq\": \"1.*.*\"';
+	navigator.clipboard.writeText(text);
+	}");
 	
 	eq_div("content");
 	
@@ -34,10 +39,21 @@ eq_end();'];
 		eq_div_end();
 		eq_div_end("box");
 		eq_div("box");
-			$buttons = [eq_link("", "get eq.php", "button"), eq_link("", "learn eq.php", "button"), eq_link("", "donate", "button")];
+			$buttons = [eq_link("#get", "📁 get eq.php", "button"), eq_link("", "📖 learn eq.php", "button"), eq_link("", "💸 donate", "button")];
 			eq_text($buttons, "butt_list");
 		eq_div_end();
+	eq_div_end();
 	
+	eq_div("grid", "get");
+		eq_div("box");
+			eq_text("get eq.php", "h2", "center");
+			eq_text(["I suggest using " . eq_link("https://getcomposer.org/","Composer") . " to install eq in your project, as it will help you stay up-to-date with new versions", "Alternatively, you may download the current version of the library from the link to the right, and view previous releases on the github"], "p", "center");
+		eq_div_end();
+		eq_div_end("box");
+		eq_div("box");
+			$buttons = [eq_link('!onclick=copy_composer();', '"brianlaclair/eq": "1.*.*"</br>copy to clipboard', "button"), eq_link("", "📁 download {$version} php", "button"), eq_link("", "🔭 older versions", "button")];
+			eq_text($buttons, "butt_list");
+		eq_div_end();
 	eq_div_end();
 	
 	eq_div("grid");
