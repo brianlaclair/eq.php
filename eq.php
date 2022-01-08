@@ -371,10 +371,20 @@ function eq_image($url = "", $class = null, $attr = null, $return = false) {
 	
 }
 
-function eq_br($ittr = 1) {
+function eq_br($ittr = 1, $return = null) {
+	if (!isset($return)) { $return = false; }
+	
+	$fin = "";
 	for($i = 0; $i < $ittr; $i++) {
-		_eq_add_body("</br>");
+		$_fin .= "</br>";
 	}
+	
+	if ($return) {
+		return $_fin;
+	} else {
+		_eq_add_body($_fin);
+	}
+	
 }
 
 function eq_caption($text = "", $class = null) {

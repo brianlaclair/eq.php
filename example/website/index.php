@@ -51,18 +51,18 @@ eq_end();'];
 		eq_div_end();
 		eq_div_end("box");
 		eq_div("box");
-			$buttons = [eq_link('!onclick=copy_composer();', '"brianlaclair/eq": "1.*.*"</br>copy to clipboard', "button"), eq_link("", "📁 download {$version} php", "button"), eq_link("", "🔭 older versions", "button")];
+			$buttons = [eq_link('!onclick=copy_composer();', '🎼Composer' . eq_br(1, true) . eq_text("(click to copy)", "sub", "", true), "button"), eq_link("", "📁 download {$version} php", "button"), eq_link("", "🔭 older versions", "button")];
 			eq_text($buttons, "butt_list");
 		eq_div_end();
 	eq_div_end();
 	
 	eq_div("grid");
 
-	eq_text($first_example['html'], ["div class='box'","pre", "code"], "language-html");
-	
-	eq_text("eq ➡️", ["div class='box'", "h2"], "middle");
+		eq_text($first_example['html'], ["div class='box'","pre", "code"], "language-html");
+		
+		eq_text("eq ➡️", ["div class='box'", "h2"], "middle");
 
-	eq_text($first_example['eq'], ["div class='box'", "pre", "code"], "language-php");
+		eq_text($first_example['eq'], ["div class='box'", "pre", "code"], "language-php");
 
 	eq_div_end(2);
 
