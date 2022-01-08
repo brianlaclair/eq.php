@@ -51,6 +51,7 @@ eq_end();'];
 		eq_div_end();
 		eq_div_end("box");
 		eq_div("box");
+			$version = "1.0.0";
 			$buttons = [eq_link('!onclick=copy_composer();', '🎼Composer' . eq_br(1, true) . eq_text("(click to copy)", "sub", "", true), "button"), eq_link("", "📁 download {$version} php", "button"), eq_link("", "🔭 older versions", "button")];
 			eq_text($buttons, "butt_list");
 		eq_div_end();
@@ -70,4 +71,5 @@ eq_end();'];
 	
 	eq_script("prism.js");
 	eq_end();
+
 ?>

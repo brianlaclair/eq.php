@@ -82,6 +82,22 @@ function eq_end($return = false) {
 	
 }
 
+function eq_html($html = "", $head = null) {
+	
+	// Auto-decide the $head argument based on context, if it's not set
+	if (!isset($head)) {
+		$head = true;
+		if (_body_is_active()) { $head = false; }
+	}
+	
+	if ($head) {
+		_eq_add_head($html);
+	} else {
+		_eq_add_body($html);
+	}
+	
+}
+
 #region Internal Functions
 
 function _eq_add_head($ln) {
@@ -96,6 +112,16 @@ function _eq_add_body($ln) {
 	global $__eq_buffer;
 	array_push($__eq_buffer['body'], $ln);
 	
+}
+
+function _body_is_active() {
+	global $__eq_buffer;
+	
+	if (!count($__eq_buffer['body'])) {
+		return false;
+	}
+	
+	return true;
 }
 
 function _eq_url_exists($url) {
@@ -314,7 +340,7 @@ function eq_link($url = "", $text = null, $class = null, $return = true) {
 	$_text  = "";
 	$_prefix = "href";
 	
-	if ($url[0] == "!") {
+	if (mb_strlen($url) > 0 && $url[0] == "!") {
 		$_url = explode("=", $url, 2);
 		$url = $_url[1];
 		$_prefix = ltrim($_url[0], "!");
@@ -374,7 +400,7 @@ function eq_image($url = "", $class = null, $attr = null, $return = false) {
 function eq_br($ittr = 1, $return = null) {
 	if (!isset($return)) { $return = false; }
 	
-	$fin = "";
+	$_fin = "";
 	for($i = 0; $i < $ittr; $i++) {
 		$_fin .= "</br>";
 	}
