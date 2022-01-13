@@ -3,7 +3,7 @@
 	"type": "library",
     "description": "Buffered function-based HTML generator for PHP",
 	"keywords": ["html","markup"],
-	"homepage": "https://github.com/brianlaclair/eq.php",
+	"homepage": "https://brianlaclair.com/",
 	"license": "MIT",
 	"authors": [
         {
