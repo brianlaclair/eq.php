@@ -290,7 +290,7 @@ function eq_div_end($ittr = 1) {
 #region Content
 
 function eq_text($text = "", $type = NULL, $class = NULL, $return = NULL) {
-	$_class = "";
+	$_class 	= "";
 	$_typeStart = "";
 	$_typeEnd	= "";
 	
@@ -299,7 +299,7 @@ function eq_text($text = "", $type = NULL, $class = NULL, $return = NULL) {
 	}
 	
 	if (!is_array($text)) {
-		$text = [$text];
+		$text 	= [$text];
 	}
 	
 	if (isset($type) || isset($class)) {
